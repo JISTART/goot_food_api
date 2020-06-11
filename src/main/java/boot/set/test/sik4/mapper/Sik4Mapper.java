@@ -9,4 +9,8 @@ import boot.set.test.sik4.domain.TestVO;
 @Mapper
 public interface Sik4Mapper {
 	public List<TestVO> test();
+
+	public List<TestVO> search(List<String> strArr);
+
+	public int insertStore(TestVO testVO);
 }

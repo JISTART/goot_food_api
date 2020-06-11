@@ -13,11 +13,24 @@ import boot.set.test.sik4.mapper.Sik4Mapper;
 public class Sik4Service {
 	@Autowired
 	Sik4Mapper sik4Mapper;
-	
+
 	public List<TestVO> test() {
 		List<TestVO> resultList = new ArrayList<>();
 		resultList = sik4Mapper.test();
-		
+
 		return resultList;
+	}
+
+	public List<TestVO> search(List<String> strArr) {
+		List<TestVO> resultList = new ArrayList<>();
+		resultList = sik4Mapper.search(strArr);
+		return resultList;
+	}
+
+	public void insertStore(TestVO testVO) throws Exception {
+
+		int cnt = sik4Mapper.insertStore(testVO);
+		if(cnt < 0) throw new Exception("insert 실패");
+
 	}
 }

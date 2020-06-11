@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="boot.set.test.sik4.mapper.Sik4Mapper">
-<select id="test" resultType="TestVO">
-SELECT * FROM SEARCH_TAG
-</select>
+	<select id="test" resultType="TestVO">
+	SELECT * FROM search_tag
+	</select>
+
+	<select id="search" parameterType="list" resultType="TestVO">
+		SELECT
+			STORE_NAME, STORE_TAG, STORE_CATE, STORE_STAR, STORE_ADDR
+		FROM
+			food_store
+		WHERE
+			<choose>
+				<when test="list.size != 0">
+					<foreach collection="list" item="item" separator="or">
+						STORE_TAG LIKE concat('%', #{item}, '%')
+					</foreach>
+				</when>
+				<otherwise>
+					STORE_TAG LIKE '%가까운%' or STORE_TAG LIKE '%아메리카노%' or STORE_TAG LIKE '%콜드브루%' or STORE_TAG LIKE '%맛집%'
+				</otherwise>
+			</choose>
+		ORDER BY LENGTH(STORE_TAG)
+	</select>
+
+	<insert id="insertStore" parameterType="TestVO">
+		INSERT INTO food_store (STORE_NAME, STORE_TAG, STORE_CATE, STORE_STAR, STORE_ADDR)
+		VALUES (#{storeName}, #{storeTag}, #{storeCate}, #{storeStar}, #{storeAddr})
+	</insert>
+
 </mapper>
