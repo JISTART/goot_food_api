@@ -1,14 +1,26 @@
 package boot.set.test.sik4.web;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.URL;
+import java.util.Base64;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.apache.tomcat.util.buf.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,39 +74,87 @@ public class Sik4Controller {
 
 		try {
 			testVO.setStoreTag(StringUtils.join(testVO.getConvertTag(), '|'));
+			String cwalImg = testVO.getCwalImg().replace(" ", "+");
+
+			// WebDriver 경로 설정
+	        System.setProperty("webdriver.chrome.driver", "c:/Users/4depth/Downloads/chromedriver/chromedriver.exe");
+
+	        ChromeOptions options = new ChromeOptions();
+	        options.addArguments("headless");
+
+	        WebDriver driver = new ChromeDriver(options);
+	        driver.get("https://www.google.com/search?q="+cwalImg);
+
+	        List<WebElement> img = driver.findElements(By.className("rISBZc"));
+	        System.out.println("1111 : " + img.get(0).getAttribute("src").length());
+
+	        testVO.setStoreImg(img.get(0).getAttribute("src"));
+
 			sik4Service.insertStore(testVO);
+
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new ResponseEntity<String>("",HttpStatus.BAD_GATEWAY);
 		}
 
 		return new ResponseEntity<String>("",HttpStatus.OK);
 	}
 
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
+//
+//		String url = "https://baekh-93.tistory.com/11";
+//		Document doc = null;
+//
+//		try {
+//			doc = Jsoup.connect(url).get();
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		Elements element = doc.select("div.tt_article_useless_p_margin");
+//
+//		//Iterator을 사용하여 하나씩 값 가져오기
+//        //덩어리안에서 필요한부분만 선택하여 가져올 수 있다.
+//		Iterator<Element> ie1 = element.select("p").iterator();
+//
+//		while(ie1.hasNext()) {
+//			System.out.println("크롤링 : " + ie1.next().text());
+//		}
+//
+//		System.out.println("============================================================");
+//
+//	}
 
-		String url = "https://toma0912.tistory.com/74";
-		Document doc = null;
-
-		try {
-			doc = Jsoup.connect(url).get();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		Elements element = doc.select("div.home_news");
-
-		String title = element.select("h3").text().substring(0, 4);
-
-		System.out.println("============================================================");
-		System.out.println(title);
-		System.out.println("============================================================");
-
-		for(Element el : element.select("li")) {
-			System.out.println(el.text());
-		}
-
-		System.out.println("============================================================");
-
-	}
+//	public static void main(String[] args) {
+//
+//		String siteUrl = "https://www.google.com/search?q=%EB%A1%AF%EB%8D%B0%EB%A6%AC%EC%95%84+%EC%97%AD%EC%82%BC%EC%A0%90&source=lnms";
+//		Document doc = null;
+//		String folder = "";
+//		try {
+//			doc = Jsoup.connect(siteUrl).get();
+//			folder = doc.title();
+//
+//			Element element = doc.select("div.cont_essential").get(0);
+//			Elements img = doc.select("div.thumb");
+//			System.out.println("img : " + img);
+//			int page = 0;
+//
+//			for(Element e : img) {
+//				String url = e.getElementsByAttribute("src").attr("src");
+//				String url = img.first().attr("style").replace("background-image:url('","").replace("')", "");
+//				System.out.println("url:"+url);
+//
+//				URL imgUrl = new URL(url);
+//				BufferedImage jpg = ImageIO.read(imgUrl);
+//				File file = new File("C:\\Users\\4depth\\Desktop\\burger.jpg");
+//				ImageIO.write(jpg, "jpg", file);
+//				page+=1;
+//			}
+//
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 }

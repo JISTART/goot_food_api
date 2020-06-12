@@ -1,6 +1,5 @@
 package boot.set.test.sik4.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -23,4 +22,10 @@ public class TestVO {
 	private String regId;
 	private String regDt;
 	private String review;
+	private String storeImg;
+	private String storeSiteUrl;
+	// 크롤링 할 사이트 url,imgSrc
+	private String siteWebUrl;
+	private String cwalImg;
+
 }

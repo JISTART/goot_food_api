@@ -7,7 +7,7 @@
 
 	<select id="search" parameterType="list" resultType="TestVO">
 		SELECT
-			STORE_NAME, STORE_TAG, STORE_CATE, STORE_STAR, STORE_ADDR
+			STORE_NAME, STORE_TAG, STORE_CATE, STORE_STAR, STORE_ADDR, STORE_SITE_URL, STORE_IMG
 		FROM
 			food_store
 		WHERE
@@ -25,14 +25,13 @@
 	</select>
 
 	<insert id="insertStore" parameterType="TestVO">
-		INSERT INTO food_store (STORE_NAME, STORE_TAG, STORE_CATE, STORE_STAR, STORE_ADDR)
-		VALUES (#{storeName}, #{storeTag}, #{storeCate}, #{storeStar}, #{storeAddr})
-
+		INSERT INTO food_store (STORE_NAME, STORE_TAG, STORE_CATE, STORE_STAR, STORE_ADDR, STORE_SITE_URL, STORE_IMG)
+		VALUES (#{storeName}, #{storeTag}, #{storeCate}, #{storeStar}, #{storeAddr}, #{storeSiteUrl}, #{storeImg})
 		<selectKey resultType="integer" keyProperty="storeSeq" order="AFTER">
 	        SELECT LAST_INSERT_ID()
     	</selectKey>
 	</insert>
-	
+
 	<insert id="insertStar" parameterType="TestVO">
 		INSERT INTO food_store_star (
 				STORE_SEQ
@@ -48,7 +47,7 @@
 		VALUES (
 			#{storeSeq}
 			, #{storeStar}
-			<if test='regId!=null and !"".equals(regId)'>			
+			<if test='regId!=null and !"".equals(regId)'>
 				, #{regId}
 				, sysdate
 			</if>
@@ -57,7 +56,7 @@
 			</if>
 		)
 	</insert>
-	
+
 	<insert id="insertTag" parameterType="java.util.List">
 		INSERT INTO search_tag(TAG_NAME)
 		VALUES
