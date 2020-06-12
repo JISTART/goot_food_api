@@ -13,4 +13,8 @@ public interface Sik4Mapper {
 	public List<TestVO> search(List<String> strArr);
 
 	public int insertStore(TestVO testVO);
+	
+	public int insertStar(TestVO testVO);
+	
+	public void insertTag(List<String> list);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import boot.set.test.sik4.domain.TestVO;
 import boot.set.test.sik4.mapper.Sik4Mapper;
@@ -27,10 +28,22 @@ public class Sik4Service {
 		return resultList;
 	}
 
+	
 	public void insertStore(TestVO testVO) throws Exception {
 
 		int cnt = sik4Mapper.insertStore(testVO);
-		if(cnt < 0) throw new Exception("insert 실패");
+		List<String> convertTag = testVO.getConvertTag();
+		if(cnt < 0) {
+			throw new Exception("insertStore 실패");
+		} else {
+			if(convertTag.size()>0) {
+				sik4Mapper.insertTag(testVO.getConvertTag());
+			}
+			cnt = sik4Mapper.insertStar(testVO);
+			if(cnt < 0) {
+				throw new Exception("insertStar 실패");
+			}
+		}
 
 	}
 }

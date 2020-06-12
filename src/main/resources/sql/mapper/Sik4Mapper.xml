@@ -27,6 +27,45 @@
 	<insert id="insertStore" parameterType="TestVO">
 		INSERT INTO food_store (STORE_NAME, STORE_TAG, STORE_CATE, STORE_STAR, STORE_ADDR)
 		VALUES (#{storeName}, #{storeTag}, #{storeCate}, #{storeStar}, #{storeAddr})
+
+		<selectKey resultType="integer" keyProperty="storeSeq" order="AFTER">
+	        SELECT LAST_INSERT_ID()
+    	</selectKey>
+	</insert>
+	
+	<insert id="insertStar" parameterType="TestVO">
+		INSERT INTO food_store_star (
+				STORE_SEQ
+				, STORE_STAR
+			<if test='regId!=null and !"".equals(regId)'>
+				, REG_ID
+				, REG_DT
+			</if>
+			<if test='review!=null and !"".equals(review)'>
+				, REVIEW
+			</if>
+			)
+		VALUES (
+			#{storeSeq}
+			, #{storeStar}
+			<if test='regId!=null and !"".equals(regId)'>			
+				, #{regId}
+				, sysdate
+			</if>
+			<if test='review!=null and !"".equals(review)'>
+				, #{review}
+			</if>
+		)
+	</insert>
+	
+	<insert id="insertTag" parameterType="java.util.List">
+		INSERT INTO search_tag(TAG_NAME)
+		VALUES
+ 		<foreach item="item" index="index" collection="list" separator=",">
+		(
+			#{item}
+		)
+		</foreach>
 	</insert>
 
 </mapper>
