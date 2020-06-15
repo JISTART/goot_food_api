@@ -21,9 +21,9 @@ public class Sik4Service {
 		return resultList;
 	}
 
-	public List<TestVO> search(List<String> strArr) {
+	public List<TestVO> search(TestVO testVO) {
 		List<TestVO> resultList = new ArrayList<>();
-		resultList = sik4Mapper.search(strArr);
+		resultList = sik4Mapper.search(testVO);
 		return resultList;
 	}
 

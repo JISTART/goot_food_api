@@ -27,5 +27,9 @@ public class TestVO {
 	// 크롤링 할 사이트 url,imgSrc
 	private String siteWebUrl;
 	private String cwalImg;
+	private int pageIndex;
+	private List<String> strArr;
+	private int firstIndex = 0;
+	private int lastIndex = 8;
 
 }

@@ -10,12 +10,12 @@ import boot.set.test.sik4.domain.TestVO;
 public interface Sik4Mapper {
 	public List<TestVO> test();
 
-	public List<TestVO> search(List<String> strArr);
+	public List<TestVO> search(TestVO testVO);
 
 	public int insertStore(TestVO testVO);
-	
+
 	public int insertStar(TestVO testVO);
-	
+
 //	public void insertTag(List<String> list);
 	public void insertTag(String tag);
 }

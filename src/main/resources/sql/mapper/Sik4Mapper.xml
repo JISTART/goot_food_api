@@ -5,26 +5,24 @@
 	SELECT * FROM search_tag
 	</select>
 
-	<select id="search" parameterType="list" resultType="TestVO">
+	<select id="search" parameterType="TestVO" resultType="TestVO">
 		SELECT
 			STORE_NAME, STORE_TAG, STORE_CATE, STORE_STAR, STORE_ADDR, STORE_SITE_URL, STORE_IMG
 		FROM
 			food_store
 		WHERE
 			<choose>
-				<when test="list.size != 0">
-					<foreach collection="list" item="item" separator="or">
+				<when test="strArr.size != 0">
+					<foreach collection="strArr" item="item" separator="or">
 						STORE_TAG LIKE concat('%', #{item}, '%')
 					</foreach>
 				</when>
 				<otherwise>
 					1=1
 				</otherwise>
-<!-- 				<otherwise> -->
-<!-- 					STORE_TAG LIKE '%가까운%' or STORE_TAG LIKE '%아메리카노%' or STORE_TAG LIKE '%콜드브루%' or STORE_TAG LIKE '%맛집%' -->
-<!-- 				</otherwise> -->
 			</choose>
 		ORDER BY LENGTH(STORE_TAG)
+		LIMIT #{firstIndex}, #{lastIndex}
 	</select>
 
 	<insert id="insertStore" parameterType="TestVO">
@@ -61,21 +59,13 @@
 	</insert>
 
 	<insert id="insertTag" parameterType="String">
-<!-- 		INSERT INTO search_tag(TAG_NAME) -->
-<!-- 			SELECT #{tag} FROM DUAL -->
-<!-- 			WHERE NOT EXISTS ( SELECT count(*) FROM search_tag WHERE TAG_NAME = #{tag})  -->
-<!-- 		 INSERT INTO search_tag -->
-<!-- 			SET TAG_NAME = #{tag} -->
-			
-<!-- 			ON DUPLICATE KEY UPDATE -->
-<!-- 				TAG_NAME = #{tag} -->
-			INSERT INTO search_tag(TAG_NAME) 
-				SELECT 
-					#{tag} 
-				FROM 
-					DUAL 
-				WHERE 
-					NOT EXISTS 
+			INSERT INTO search_tag(TAG_NAME)
+				SELECT
+					#{tag}
+				FROM
+					DUAL
+				WHERE
+					NOT EXISTS
 						(
 							SELECT TAG_NAME FROM search_tag WHERE TAG_NAME = #{tag}
 						)

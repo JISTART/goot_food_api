@@ -45,11 +45,32 @@ public class Sik4Controller {
 	}
 
 	@PostMapping("/search")
-	public @ResponseBody ResponseEntity<?> search(@RequestBody List<String> strArr) {
+	public @ResponseBody ResponseEntity<?> search(@RequestBody TestVO testVO) {
 
-		System.out.println(strArr);
+		System.out.println(testVO.getStrArr());
+		System.out.println(testVO.getPageIndex());
 
-		List<TestVO> resultList = sik4Service.search(strArr);
+		testVO.setLastIndex(testVO.getPageIndex() * testVO.getLastIndex());
+
+		List<TestVO> resultList = sik4Service.search(testVO);
+		for(int i =0; i<resultList.size(); i++) {
+			resultList.get(i).setStoreTag(resultList.get(i).getStoreTag().replace("|", "#"));
+		}
+		System.out.println(resultList.size());
+
+		return new ResponseEntity<List>(resultList,HttpStatus.OK);
+	}
+
+	@PostMapping("/moreList")
+	public @ResponseBody ResponseEntity<?> moreList(@RequestBody TestVO testVO) {
+
+		System.out.println(testVO.getStrArr());
+		System.out.println(testVO.getPageIndex());
+
+		testVO.setFirstIndex((testVO.getPageIndex()-1) * testVO.getLastIndex());
+		testVO.setLastIndex(testVO.getPageIndex() * testVO.getLastIndex());
+
+		List<TestVO> resultList = sik4Service.search(testVO);
 		for(int i =0; i<resultList.size(); i++) {
 			resultList.get(i).setStoreTag(resultList.get(i).getStoreTag().replace("|", "#"));
 		}
