@@ -18,7 +18,7 @@
 					</foreach>
 				</when>
 				<otherwise>
-					STORE_TAG LIKE '%가까운%' or STORE_TAG LIKE '%아메리카노%' or STORE_TAG LIKE '%콜드브루%' or STORE_TAG LIKE '%맛집%'
+					1=1
 				</otherwise>
 			</choose>
 		ORDER BY LENGTH(STORE_TAG)
