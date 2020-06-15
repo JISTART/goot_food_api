@@ -16,5 +16,6 @@ public interface Sik4Mapper {
 	
 	public int insertStar(TestVO testVO);
 	
-	public void insertTag(List<String> list);
+//	public void insertTag(List<String> list);
+	public void insertTag(String tag);
 }

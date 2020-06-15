@@ -37,7 +37,9 @@ public class Sik4Service {
 			throw new Exception("insertStore 실패");
 		} else {
 			if(convertTag.size()>0) {
-				sik4Mapper.insertTag(testVO.getConvertTag());
+				for(int i=0;i<convertTag.size();i++) {
+					sik4Mapper.insertTag(convertTag.get(i));
+				}
 			}
 			cnt = sik4Mapper.insertStar(testVO);
 			if(cnt < 0) {

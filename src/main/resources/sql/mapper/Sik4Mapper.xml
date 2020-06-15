@@ -18,8 +18,11 @@
 					</foreach>
 				</when>
 				<otherwise>
-					STORE_TAG LIKE '%가까운%' or STORE_TAG LIKE '%아메리카노%' or STORE_TAG LIKE '%콜드브루%' or STORE_TAG LIKE '%맛집%'
+					1=1
 				</otherwise>
+<!-- 				<otherwise> -->
+<!-- 					STORE_TAG LIKE '%가까운%' or STORE_TAG LIKE '%아메리카노%' or STORE_TAG LIKE '%콜드브루%' or STORE_TAG LIKE '%맛집%' -->
+<!-- 				</otherwise> -->
 			</choose>
 		ORDER BY LENGTH(STORE_TAG)
 	</select>
@@ -57,14 +60,25 @@
 		)
 	</insert>
 
-	<insert id="insertTag" parameterType="java.util.List">
-		INSERT INTO search_tag(TAG_NAME)
-		VALUES
- 		<foreach item="item" index="index" collection="list" separator=",">
-		(
-			#{item}
-		)
-		</foreach>
+	<insert id="insertTag" parameterType="String">
+<!-- 		INSERT INTO search_tag(TAG_NAME) -->
+<!-- 			SELECT #{tag} FROM DUAL -->
+<!-- 			WHERE NOT EXISTS ( SELECT count(*) FROM search_tag WHERE TAG_NAME = #{tag})  -->
+<!-- 		 INSERT INTO search_tag -->
+<!-- 			SET TAG_NAME = #{tag} -->
+			
+<!-- 			ON DUPLICATE KEY UPDATE -->
+<!-- 				TAG_NAME = #{tag} -->
+			INSERT INTO search_tag(TAG_NAME) 
+				SELECT 
+					#{tag} 
+				FROM 
+					DUAL 
+				WHERE 
+					NOT EXISTS 
+						(
+							SELECT TAG_NAME FROM search_tag WHERE TAG_NAME = #{tag}
+						)
 	</insert>
 
 </mapper>
