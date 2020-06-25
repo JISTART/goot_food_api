@@ -53,6 +53,7 @@ public class Sik4Controller {
 		for(int i =0; i<resultList.size(); i++) {
 			resultList.get(i).setStoreTag(resultList.get(i).getStoreTag().replace("|", "#"));
 		}
+
 		System.out.println(resultList.size());
 
 		return new ResponseEntity<List>(resultList,HttpStatus.OK);
@@ -69,7 +70,7 @@ public class Sik4Controller {
 			String headers = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36";
 
 			// WebDriver 경로 설정
-	        System.setProperty("webdriver.chrome.driver", "c:/Users/4depth/Downloads/chromedriver/chromedriver.exe");
+	        System.setProperty("webdriver.chrome.driver", "C:/Users/4DETPH/Downloads/chromedriver/chromedriver.exe");
 
 	        ChromeOptions options = new ChromeOptions();
 	        options.addArguments("headless");
