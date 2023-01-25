@@ -18,7 +18,7 @@
 					</foreach>
 				</when>
 				<otherwise>
-					STORE_TAG LIKE '%가까운%' or STORE_TAG LIKE '%아메리카노%' or STORE_TAG LIKE '%콜드브루%' or STORE_TAG LIKE '%맛집%'
+					1=1
 				</otherwise>
 			</choose>
 		ORDER BY LENGTH(STORE_TAG)
@@ -27,6 +27,44 @@
 	<insert id="insertStore" parameterType="TestVO">
 		INSERT INTO food_store (STORE_NAME, STORE_TAG, STORE_CATE, STORE_STAR, STORE_ADDR, STORE_SITE_URL, STORE_IMG)
 		VALUES (#{storeName}, #{storeTag}, #{storeCate}, #{storeStar}, #{storeAddr}, #{storeSiteUrl}, #{storeImg})
+		<selectKey resultType="integer" keyProperty="storeSeq" order="AFTER">
+	        SELECT LAST_INSERT_ID()
+    	</selectKey>
+	</insert>
+
+	<insert id="insertStar" parameterType="TestVO">
+		INSERT INTO food_store_star (
+				STORE_SEQ
+				, STORE_STAR
+			<if test='regId!=null and !"".equals(regId)'>
+				, REG_ID
+				, REG_DT
+			</if>
+			<if test='review!=null and !"".equals(review)'>
+				, REVIEW
+			</if>
+			)
+		VALUES (
+			#{storeSeq}
+			, #{storeStar}
+			<if test='regId!=null and !"".equals(regId)'>
+				, #{regId}
+				, sysdate
+			</if>
+			<if test='review!=null and !"".equals(review)'>
+				, #{review}
+			</if>
+		)
+	</insert>
+
+	<insert id="insertTag" parameterType="java.util.List">
+		INSERT INTO search_tag(TAG_NAME)
+		VALUES
+ 		<foreach item="item" index="index" collection="list" separator=",">
+		(
+			#{item}
+		)
+		</foreach>
 	</insert>
 
 </mapper>

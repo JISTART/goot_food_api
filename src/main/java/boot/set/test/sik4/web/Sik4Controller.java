@@ -1,21 +1,10 @@
 package boot.set.test.sik4.web;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.URL;
-import java.util.Base64;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
 import org.apache.tomcat.util.buf.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -75,22 +64,28 @@ public class Sik4Controller {
 		try {
 			testVO.setStoreTag(StringUtils.join(testVO.getConvertTag(), '|'));
 			String cwalImg = testVO.getCwalImg().replace(" ", "+");
+			System.out.println(cwalImg);
+
+			String headers = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36";
 
 			// WebDriver 경로 설정
 	        System.setProperty("webdriver.chrome.driver", "c:/Users/4depth/Downloads/chromedriver/chromedriver.exe");
 
 	        ChromeOptions options = new ChromeOptions();
 	        options.addArguments("headless");
+	        options.addArguments(headers);
 
 	        WebDriver driver = new ChromeDriver(options);
-	        driver.get("https://www.google.com/search?q="+cwalImg);
+	        driver.get("https://duckduckgo.com/?q="+cwalImg+"&t=ht&iax=images&ia=images");
 
-	        List<WebElement> img = driver.findElements(By.className("rISBZc"));
-	        System.out.println("1111 : " + img.get(0).getAttribute("src").length());
+	        List<WebElement> img = driver.findElements(By.className("tile--img__img"));
+	        System.out.println("1111 : " + img.get(0).getAttribute("src"));
 
 	        testVO.setStoreImg(img.get(0).getAttribute("src"));
 
 			sik4Service.insertStore(testVO);
+
+			driver.quit();
 
 		} catch (Exception e) {
 			e.printStackTrace();
